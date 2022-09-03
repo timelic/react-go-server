@@ -7,33 +7,6 @@ function genKey(i: number, j: number) {
   return `${i}:${j}`;
 }
 
-/**
- * @function 获取这个棋子的气
- * @return [气的数量，dp]
- */
-function getLiberties(
-  i: number,
-  j: number,
-  blocks: PieceState[][]
-): [number, Record<string, boolean>] {
-  const dp: Record<string, boolean> = {};
-  const initialState = blocks[i][j];
-  function helper(i: number, j: number): number {
-    if (i < 0 || i >= blocks.length || j < 0 || j >= blocks[0].length) return 0;
-    if (dp[genKey(i, j)]) return 0;
-    if (blocks[i][j] === PieceState.None) return 1;
-    if (blocks[i][j] !== initialState) return 0;
-    // 标记为已走过
-    dp[genKey(i, j)] = true;
-    // 遍历四个边
-    return (
-      helper(i - 1, j) + helper(i + 1, j) + helper(i, j - 1) + helper(i, j + 1)
-    );
-  }
-  // 返回气的数量，并且返回已经走过的坐标
-  return [helper(i, j), dp];
-}
-
 function checkOutOfBounds(i: number, j: number, blocks: PieceState[][]) {
   return i < 0 || i >= blocks.length || j < 0 || j >= blocks[0].length;
 }
@@ -52,13 +25,19 @@ function bfs(
 ): boolean {
   // 出界返回true
   if (checkOutOfBounds(i, j, blocks)) return true;
+  // 走过的点位记录
+  const dp: Record<string, boolean> = {};
   // 当前点类型
   const p: PieceState = blocks[i][j];
   // 要遍历坐标的数组
   const array: [number, number][] = [[i, j]];
   for (let pos of array) {
-    // 出界按无气算，继续遍历
+    // 出界按无气算，不进行计算
     if (checkOutOfBounds(pos[0], pos[1], blocks)) continue;
+    // 该点位走过，不进行计算
+    if (dp[genKey(pos[0], pos[1])]) continue;
+    // 标记为已走过
+    dp[genKey(pos[0], pos[1])] = true;
     // 发现空则必定存在气，返回true
     if (blocks[pos[0]][pos[1]] === PieceState.None) return true;
     // 如果依然是对方的类型则继续遍历
@@ -92,13 +71,16 @@ export function updateTable(
   j: number,
   p: PieceState
 ): boolean {
-  console.log({ i, j, p });
   // 暂时允许下该步
   blocks[i][j] = p;
   // 四周的区域是否有气
   let hasLiberty: boolean = true;
   // 检查四周
   for (let k = 0; k < 4; k++) {
+    // 出界不检测
+    if (checkOutOfBounds(i + di[k], j + dj[k], blocks)) continue;
+    // 只检测是否吃了对方的子，如果探查位置是自己的子则不检测
+    if (blocks[i + di[k]][j + dj[k]] === p) continue;
     // 四周的区域任意一个区域无气了则代表存在吃棋
     hasLiberty = bfs(i + di[k], j + dj[k], blocks, true) && hasLiberty;
   }

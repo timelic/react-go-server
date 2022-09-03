@@ -109,6 +109,7 @@ io.on("connection", (socket) => {
       );
       rooms.push(room);
     } else {
+      console.log("拒绝了");
       // 告诉发起人 他被拒绝了
       socket.to(roomId).emit("start", { isAccepted });
       // 解散房间
