@@ -1,6 +1,4 @@
-import { random } from "lodash";
 import { Server, Socket } from "socket.io";
-import { PieceState } from "@types";
 
 /**
  * 通过多个 id 获取唯一的房间名

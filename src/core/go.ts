@@ -35,6 +35,10 @@ export class Go {
     this.pushHistory(playerId, cloneDeep(this.board));
   }
 
+  skip(playerId: Player["id"]) {
+    this.pushHistory(playerId, cloneDeep(this.board));
+  }
+
   /**
    * 新增一个历史
    */

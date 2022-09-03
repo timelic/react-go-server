@@ -29,14 +29,19 @@ export class Room {
     this.on();
   }
   private on() {
-    this.sockets.forEach((socket) =>
+    this.sockets.forEach((socket) => {
       socket.on("action", (i: number, j: number) => {
         const color = this.players.filter((p) => p.id === socket.id)[0].color;
         this.go.action(socket.id, i, j, color);
         // 接着应该同步一次双方的棋盘
         this.sync(socket.id);
-      })
-    );
+      });
+      socket.on("skip", () => {
+        this.go.skip(socket.id);
+        // 接着应该同步一次双方的棋盘
+        this.sync(socket.id);
+      });
+    });
   }
   /**
    * 同步棋盘和历史
