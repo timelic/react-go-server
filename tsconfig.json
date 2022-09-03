@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "moduleResolution": "Node",
+    "paths": {
+      "@types": ["./src/types"],
+      "@utils": ["./src/utils"],
+      "@core": ["./src/core"]
+    }
+  },
+  "include": ["src"],
+}
