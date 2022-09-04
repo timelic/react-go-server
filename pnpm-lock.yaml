@@ -2,11 +2,15 @@ lockfileVersion: 5.4
 
 specifiers:
   '@types/lodash': ^4.14.184
+  count-time-down: ^1.0.5
+  create-countdown: ^1.2.2
   lodash: ^4.17.21
   socket.io: ^4.5.1
   tsconfig-paths: ^4.1.0
 
 dependencies:
+  count-time-down: 1.0.5
+  create-countdown: 1.2.2
   lodash: 4.17.21
   socket.io: 4.5.1
 
@@ -64,6 +68,14 @@ packages:
     dependencies:
       object-assign: 4.1.1
       vary: 1.1.2
+    dev: false
+
+  /count-time-down/1.0.5:
+    resolution: {integrity: sha512-F60sy2yhMzJud1kyTYpnfVeNZC63MmkyUm2a/7ibf2/HV4fcM+CSOIo6T/XkfPDST7KB9Bf+ATQ1r+/VUqf0Pg==}
+    dev: false
+
+  /create-countdown/1.2.2:
+    resolution: {integrity: sha512-yww+r/KD6yGz2tzo3H3ucWiSyOolnrDtJ3cxI47eM4Y8lHSxNrbXySlySbiUq/Yh4KOoyUnlSwJNcapobtnjrg==}
     dev: false
 
   /debug/4.3.4:

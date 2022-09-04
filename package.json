@@ -11,6 +11,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "count-time-down": "^1.0.5",
+    "create-countdown": "^1.2.2",
     "lodash": "^4.17.21",
     "socket.io": "^4.5.1"
   },

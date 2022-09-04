@@ -71,6 +71,7 @@ io.on("connection", (socket) => {
   });
   // 连接之后，客户端需要自我介绍，发一些基础信息过来
   socket.on("invite", (id: string) => {
+    console.log(`${socket.id} invites ${id}`);
     const player = getPlayerById(id);
     if (!player.id) return;
     // 先拉进一个房间
