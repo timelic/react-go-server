@@ -1,13 +1,10 @@
-// import { CountDown } from "count-time-down";
-import CountDown from "./count-down";
+import { createCountdown } from ".";
 const TOTAL_TIME = 30 * 60 * 1000;
 export class Timer {
-  cd: Record<string, any> = {};
+  cd: Record<string, ReturnType<typeof createCountdown>> = {};
   constructor(socketId1: string, socketId2: string) {
-    this.cd[socketId1] = new CountDown(TOTAL_TIME, { cdType: "s" }, (cb) => {
-      console.log(cb.mmss);
-    });
-    this.cd[socketId2] = new CountDown(TOTAL_TIME, { cdType: "s" }, () => {});
+    this.cd[socketId1] = createCountdown({ m: 30 }, { autoStart: false });
+    this.cd[socketId2] = createCountdown({ m: 30 }, { autoStart: false });
   }
   use(socketId: string) {
     // 这一个启用
@@ -16,7 +13,9 @@ export class Timer {
     this.cd[Object.keys(this.cd).filter((id) => id !== socketId)[0]].stop();
   }
   getValue(socketId: string) {
-    console.log(this.cd[socketId].mmss);
-    return this.cd[socketId].mmss;
+    console.log(
+      Object.keys(this.cd).map((id) => this.cd[id].get().remainingSec)
+    );
+    return this.cd[socketId].get().remainingSec;
   }
 }

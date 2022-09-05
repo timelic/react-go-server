@@ -37,7 +37,7 @@ export class Room {
         const color = this.players.filter((p) => p.id === socket.id)[0].color;
         this.go.action(socket.id, i, j, color);
         // 接着应该同步一次双方的棋盘
-        this.sync(socket.id);
+        this.sync(socket.id, i, j, this.go.history.length - 1);
         // 另一方使用计时器
         this.timer.use(this.players.filter((p) => p.id !== socket.id)[0].id);
       });
@@ -51,7 +51,7 @@ export class Room {
   /**
    * 同步棋盘和时间
    */
-  private sync(causeId: string) {
+  private sync(causeId: string, i?: number, j?: number, order?: number) {
     this.sockets.map((s) => {
       s.emit("sync", {
         board: this.go.board,
@@ -62,6 +62,7 @@ export class Room {
             this.sockets.filter(({ id }) => id !== s.id)[0].id
           ),
         },
+        lastAction: { pos: { i, j }, order },
       });
     });
   }
